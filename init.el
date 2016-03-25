@@ -16,5 +16,7 @@
 (recentf-mode 1)
 (setq recentf-max-menu-items 40)
 (ido-mode t);;set autocomplete in my file buffers
+
+;;Set up ui stuff so I can deal with it in seperate files
 (load-library "ui")
 (require 'ui)
