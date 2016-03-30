@@ -4,11 +4,20 @@
 
 ;;set up ui directory to load files
 (add-to-list 'load-path "~/.emacs.d/ui")
+
+;;Package crap
 (require 'package)
 (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
                          ("marmalade" . "https://marmalade-repo.org/packages/")
                          ("melpa" . "https://melpa.org/packages/")))
 (package-initialize) ;;make packages work from gnu marmalade and melpa
+
+;;List of packages I use. Will grow over time of course
+(package-install 'racket-mode)
+(package-install 'cyberpunk-theme)
+(package-install 'paredit)
+(package-install 'faceup)
+
 (desktop-save-mode 1);;Make sure session is preserved
 
 (setq recentf-save-file (concat user-emacs-directory ".recentf"))
