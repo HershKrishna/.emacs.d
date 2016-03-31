@@ -30,18 +30,19 @@
 (load-library "ui")
 (require 'ui)
 (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
-(add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
-(add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
-(add-hook 'ielm-mode-hook             #'enable-paredit-mode)
-(add-hook 'lisp-mode-hook             #'enable-paredit-mode)
-(add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
-(add-hook 'scheme-mode-hook           #'enable-paredit-mode)
-(add-hook  'racket-mode-hook          #'enable-paredit-mode)
-;; Stop SLIME's REPL from grabbing DEL,
-;; which is annoying when backspacing over a '('
-;;Should be useful someday when I experiment with CL
-(defun override-slime-repl-bindings-with-paredit ()
-  (define-key slime-repl-mode-map
-    (read-kbd-macro paredit-backward-delete-key)
-    nil))
-(add-hook 'slime-repl-mode-hook 'override-slime-repl-bindings-with-paredit)
+(add-hook 'emacs-lisp-mode-hook
+	  #'enable-paredit-mode)
+(add-hook 'eval-expression-minibuffer-setup-hook
+	  #'enable-paredit-mode)
+(add-hook 'ielm-mode-hook
+	  #'enable-paredit-mode)
+(add-hook 'lisp-mode-hook
+	  #'enable-paredit-mode)
+(add-hook 'lisp-interaction-mode-hook
+	  #'enable-paredit-mode)
+(add-hook 'scheme-mode-hook
+	  #'enable-paredit-mode)
+(add-hook  'racket-mode-hook
+	   #'enable-paredit-mode)
+(add-hook 'racket-REPL-hook
+	  #'enable-paredit-mode)
