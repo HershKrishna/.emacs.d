@@ -15,6 +15,9 @@
  )
 (load-theme 'cyberpunk);;theme
 
+;;Font settings
+(set-face-attribute 'default nil :font "Liberation Mono-9")
+
 (require 'linum)
 (global-linum-mode 1);;Set up Emacs so every line shows its number
 
