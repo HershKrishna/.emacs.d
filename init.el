@@ -30,6 +30,7 @@
 (load-library "ui")
 (require 'ui)
 (autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
+;;Set up paredit mode
 (add-hook 'emacs-lisp-mode-hook
 	  #'enable-paredit-mode)
 (add-hook 'eval-expression-minibuffer-setup-hook
@@ -44,5 +45,5 @@
 	  #'enable-paredit-mode)
 (add-hook  'racket-mode-hook
 	   #'enable-paredit-mode)
-(add-hook 'racket-REPL-hook
+(add-hook 'racket-repl-mode-hook
 	  #'enable-paredit-mode)
