@@ -17,6 +17,7 @@
 (package-install 'cyberpunk-theme)
 (package-install 'paredit)
 (package-install 'faceup)
+(package-install 'rainbow-delimiters)
 
 (desktop-save-mode 1);;Make sure session is preserved
 
@@ -47,3 +48,21 @@
 	   #'enable-paredit-mode)
 (add-hook 'racket-repl-mode-hook
 	  #'enable-paredit-mode)
+
+(require 'rainbow-delimiters)
+(add-hook 'emacs-lisp-mode-hook
+	  #'rainbow-delimiters-mode)
+(add-hook 'eval-expression-minibuffer-setup-hook
+	  #'rainbow-delimiters-mode)
+(add-hook 'ielm-mode-hook
+	  #'rainbow-delimiters-mode)
+(add-hook 'lisp-mode-hook
+	  #'rainbow-delimiters-mode)
+(add-hook 'lisp-interaction-mode-hook
+	  #'rainbow-delimiters-mode)
+(add-hook 'scheme-mode-hook
+	  #'rainbow-delimiters-mode)
+(add-hook  'racket-mode-hook
+	   #'rainbow-delimiters-mode)
+(add-hook 'racket-repl-mode-hook
+	  #'rainbow-delimiters-mode)
