@@ -1,4 +1,4 @@
-;;Default colors so I don't have to deal with default if something fails
+
 (set-foreground-color "#F08")
 (set-background-color "#000")
 
@@ -66,3 +66,8 @@
 	   #'rainbow-delimiters-mode)
 (add-hook 'racket-repl-mode-hook
 	  #'rainbow-delimiters-mode)
+;;Function I needed once from EmacsWiki. Might as well keep it.
+(defun kill-other-buffers ()
+  "kill all the other buffers"
+  (interactive)
+  (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))
