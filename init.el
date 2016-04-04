@@ -18,6 +18,7 @@
 (package-install 'paredit)
 (package-install 'faceup)
 (package-install 'rainbow-delimiters)
+(package-install 'magit)
 
 (desktop-save-mode 1);;Make sure session is preserved
 
@@ -30,7 +31,8 @@
 ;;Set up ui stuff so I can deal with it in seperate files
 (load-library "ui")
 (require 'ui)
-(autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
+(autoload 'enable-paredit-mode "paredit"
+  "Turn on pseudo-structural editing of Lisp code." t)
 ;;Set up paredit mode
 (add-hook 'emacs-lisp-mode-hook
 	  #'enable-paredit-mode)
@@ -71,3 +73,4 @@
   "kill all the other buffers"
   (interactive)
   (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))
+(global-set-key (kbd "C-x g") 'magit-status)
