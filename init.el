@@ -1,4 +1,3 @@
-
 (set-foreground-color "#F08")
 (set-background-color "#000")
 
@@ -14,7 +13,6 @@
 
 ;;List of packages I use. Will grow over time of course
 (package-install 'racket-mode)
-(package-install 'cyberpunk-theme)
 (package-install 'paredit)
 (package-install 'faceup)
 (package-install 'rainbow-delimiters)
@@ -46,6 +44,7 @@
 	  #'enable-paredit-mode)
 (add-hook 'scheme-mode-hook
 	  #'enable-paredit-mode)
+
 (add-hook  'racket-mode-hook
 	   #'enable-paredit-mode)
 (add-hook 'racket-repl-mode-hook
@@ -74,3 +73,4 @@
   (interactive)
   (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))
 (global-set-key (kbd "C-x g") 'magit-status)
+
