@@ -17,6 +17,7 @@
 (package-install 'faceup)
 (package-install 'rainbow-delimiters)
 (package-install 'magit)
+(package-install 'cider)
 
 (desktop-save-mode 1);;Make sure session is preserved
 
