@@ -20,5 +20,5 @@ ido.last
 *.desktop*
 .recentf
 /elpa
-#*
+#*#
 /server/
