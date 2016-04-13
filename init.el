@@ -47,8 +47,6 @@
 
 (add-hook  'racket-mode-hook
 	   #'enable-paredit-mode)
-(add-hook 'racket-repl-mode-hook
-	  #'enable-paredit-mode)
 
 ;;Function I needed once from EmacsWiki. Might as well keep it.
 (defun kill-other-buffers ()
@@ -57,3 +55,19 @@
   (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))
 (global-set-key (kbd "C-x g") 'magit-status)
 
+(defvar electrify-return-match
+  "[\]}\)\"]"
+  "If this regexp matches the text after the cursor, do an \"electric\"
+  return.")
+
+(defun electrify-return-if-match (arg)
+  "If the text after the cursor matches 'electrify-return-match
+   indent it"
+  (interactive "P")
+  (let ((case-fold-search nil))
+    (if (looking-at electrify-return-match)
+	(save-excursion (newline-and-indent)))
+    (newline arg)
+    (indent-according-to-mode)))
+
+(global-set-key (kbd "RET") 'electrify-return-if-match)
