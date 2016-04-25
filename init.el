@@ -1,6 +1,3 @@
-(set-foreground-color "#F08")
-(set-background-color "#000")
-
 ;;set up ui directory to load files
 (add-to-list 'load-path "~/.emacs.d/ui")
 
@@ -17,6 +14,7 @@
 (package-install 'faceup)
 (package-install 'magit)
 (package-install 'cider)
+(package-install 'rainbow-delimiters)
 
 (desktop-save-mode 1);;Make sure session is preserved
 
@@ -71,3 +69,6 @@
     (indent-according-to-mode)))
 
 (global-set-key (kbd "RET") 'electrify-return-if-match)
+
+;;set up rainbow delimiters
+(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
