@@ -15,6 +15,7 @@
 (package-install 'magit)
 (package-install 'cider)
 (package-install 'rainbow-delimiters)
+(package-install 'android-mode)
 
 (desktop-save-mode 1);;Make sure session is preserved
 
