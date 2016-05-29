@@ -16,7 +16,7 @@
 (package-install 'cider)
 (package-install 'rainbow-delimiters)
 (package-install 'android-mode)
-
+(package-install 'jdee)
 (desktop-save-mode 1);;Make sure session is preserved
 
 (setq recentf-save-file (concat user-emacs-directory ".recentf"))
