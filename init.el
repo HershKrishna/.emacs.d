@@ -49,8 +49,6 @@
 	  #'enable-paredit-mode)
 (add-hook 'clojure-mode-hook
 	  #'enable-paredit-mode)
-(add-hook 'repl-mode-hook
-	  #'enable-paredit-mode)
 (add-hook  'racket-mode-hook
 	   #'enable-paredit-mode)
 
