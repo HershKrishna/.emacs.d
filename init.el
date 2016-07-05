@@ -17,17 +17,21 @@
 (package-install 'rainbow-delimiters)
 (package-install 'android-mode)
 (package-install 'jdee)
+
 (desktop-save-mode 1);;Make sure session is preserved
 
 (setq recentf-save-file (concat user-emacs-directory ".recentf"))
 (require 'recentf)
 (recentf-mode 1)
 (setq recentf-max-menu-items 40)
+
 (ido-mode t);;set autocomplete in my file buffers
 
 ;;Set up ui stuff so I can deal with it in seperate files
 (load-library "ui")
 (require 'ui)
+
+;;Set up paredit
 (autoload 'enable-paredit-mode "paredit"
   "Turn on pseudo-structural editing of Lisp code." t)
 ;;Set up paredit mode
@@ -43,7 +47,10 @@
 	  #'enable-paredit-mode)
 (add-hook 'scheme-mode-hook
 	  #'enable-paredit-mode)
-
+(add-hook 'clojure-mode-hook
+	  #'enable-paredit-mode)
+(add-hook 'repl-mode-hook
+	  #'enable-paredit-mode)
 (add-hook  'racket-mode-hook
 	   #'enable-paredit-mode)
 
