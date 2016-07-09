@@ -11,7 +11,6 @@
 ;;List of packages I use. Will grow over time of course
 (package-install 'racket-mode)
 (package-install 'paredit)
-(package-install 'faceup)
 (package-install 'magit)
 (package-install 'cider)
 (package-install 'rainbow-delimiters)
