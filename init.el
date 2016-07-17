@@ -86,7 +86,9 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(racket-images-inline t))
+ '(racket-images-inline t)
+ ;;Change scheme-program-name to the name of your scheme executable
+ '(scheme-program-name "/usr/bin/guile"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
