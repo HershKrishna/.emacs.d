@@ -96,4 +96,4 @@
 
 ;;;Set up SBCL to work with SLIME
 (setq inferior-lisp-program "/usr/local/bin/sbcl")
-(setq slime-contribs '(sime-fancy))
+
