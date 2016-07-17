@@ -21,4 +21,5 @@ ido.last
 .recentf
 /elpa
 #*#
-/server/
+/server/n
+local

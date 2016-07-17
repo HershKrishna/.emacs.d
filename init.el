@@ -57,6 +57,7 @@
   (interactive)
   (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))
 (global-set-key (kbd "C-x g") 'magit-status)
+(global-set-key (kbd "C-l") 'backwards-kill-word)
 
 (defvar electrify-return-match
   "[\]}\)\"]"
