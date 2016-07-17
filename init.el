@@ -16,6 +16,7 @@
 (package-install 'rainbow-delimiters)
 (package-install 'android-mode)
 (package-install 'jdee)
+(package-install 'slime)
 
 (desktop-save-mode 1);;Make sure session is preserved
 
@@ -92,3 +93,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+;;;Set up SBCL to work with SLIME
+(setq inferior-lisp-program "/usr/local/bin/sbcl")
+(setq slime-contribs '(sime-fancy))
