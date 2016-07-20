@@ -59,8 +59,10 @@
   (mapc 'kill-buffer (delq (current-buffer) (buffer-list))))
 (global-set-key (kbd "C-x g") 'magit-status)
 (global-set-key (kbd "C-l") 'backward-kill-word)
-(global-set-key (kbd "<f5>") 'compile)
-(global-set-key (kbd "<f4>") 'gdb)
+
+;;C-mode-stuff
+(define-key c-mode-map (kbd "<f5>") 'compile)
+(define-key c-mode-map (kbd "<f6>") 'gdb)
 
 (defvar electrify-return-match
   "[\]}\)\"]"
@@ -87,8 +89,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(racket-images-inline t)
- ;;Change scheme-program-name to the name of your scheme executable
- '(scheme-program-name "/usr/bin/guile"))
+ '(scheme-program-name "/usr/bin/csi"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
