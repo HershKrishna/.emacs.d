@@ -61,9 +61,12 @@
 (global-set-key (kbd "C-l") 'backward-kill-word)
 
 ;;C-mode-stuff
-(define-key c-mode-map (kbd "<f5>") 'compile)
-(define-key c-mode-map (kbd "<f6>") 'gdb)
+(defun c-hook ()
+  (local-set-key (kbd "<f5>") 'compile)
+  (local-set-key (kbd "<f6>") 'gdb))
 
+(add-hook 'c-mode-hook
+	  'c-hook)
 (defvar electrify-return-match
   "[\]}\)\"]"
   "If this regexp matches the text after the cursor, do an \"electric\"
