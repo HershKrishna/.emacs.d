@@ -16,3 +16,8 @@
 (toggle-scroll-bar -1)
 
 (global-font-lock-mode 0)
+
+;;set up multiple cursor interaction
+(require 'multiple-cursors)
+
+(global-set-key (kbd "C-c C-c") 'mc/edit-lines)
