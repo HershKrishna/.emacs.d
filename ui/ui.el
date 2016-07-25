@@ -1,8 +1,8 @@
 (provide 'ui)
 
-(set-foreground-color "#F0F")
-(set-background-color "#000")
-(set-cursor-color "#FFF")
+(set-foreground-color "#23F")
+(set-background-color "#CDD")
+(set-cursor-color "#23F")
 
 ;;Font settings
 (set-face-attribute 'default nil :font "Liberation Mono-9")
@@ -14,3 +14,5 @@
 
 (tool-bar-mode -1)
 (toggle-scroll-bar -1)
+
+(global-font-lock-mode 0)
