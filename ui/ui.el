@@ -15,8 +15,6 @@
 (tool-bar-mode -1)
 (toggle-scroll-bar -1)
 
-(global-font-lock-mode 0)
-
 ;;set up multiple cursor interaction
 (require 'multiple-cursors)
 
@@ -25,3 +23,5 @@
 (global-set-key (kbd "C->") 'mc/mark-next-like-this)
 (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
 (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+
+(setq c-default-style "gnu")

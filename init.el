@@ -67,6 +67,9 @@
 
 (add-hook 'c-mode-hook
 	  'c-hook)
+(add-hook 'c++-mode-hook
+	  'c-hook)
+
 (defvar electrify-return-match
   "[\]}\)\"]"
   "If this regexp matches the text after the cursor, do an \"electric\"
