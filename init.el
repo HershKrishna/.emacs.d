@@ -73,7 +73,7 @@
 (defvar electrify-return-match
   "[\]}\)\"]"
   "If this regexp matches the text after the cursor, do an \"electric\"
-  return.")
+return.")
 
 (defun electrify-return-if-match (arg)
   "If the text after the cursor matches 'electrify-return-match
