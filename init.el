@@ -9,14 +9,33 @@
 (package-initialize) ;;make packages work from gnu marmalade and melpa
 
 ;;List of packages I use. Will grow over time of course
-(package-install 'racket-mode)
-(package-install 'paredit)
-(package-install 'magit)
-(package-install 'cider)
-(package-install 'rainbow-delimiters)
-(package-install 'android-mode)
-(package-install 'jdee)
-(package-install 'slime)
+(defvar my-packages '(racket-mode
+		      paredit
+		      magit
+		      cider
+		      slime
+		      markdown-mode))
+
+;;Install missing packages
+(dolist (p my-packages)
+  (when (not (package-installed-p p))
+    (print (format "Installing %s" p))
+    (package-install p)))
+
+;;Set backups out of my goddamn directories I am sick of this shit
+(defvar user-temporary-file-directory
+  "~/.emacs-backup")
+
+(make-directory user-temporary-file-directory t)
+(setq backup-by-copying t)
+(setq backup-directory-alist 
+      `(("." . ,user-temporary-file-directory)
+	(,tramp-file-name-regexp nil)))
+(setq auto-save-list-file-prefix
+      (concat user-temporary-file-directory ".auto-saves-"))
+(setq auto-save-file-name-transforms
+      `((".*" ,user-temporary-file-directory t)))
+
 
 (desktop-save-mode 1);;Make sure session is preserved
 
@@ -60,6 +79,12 @@
 (global-set-key (kbd "C-x g") 'magit-status)
 (global-set-key (kbd "C-l") 'backward-kill-word)
 
+
+;;Common lisp stuff
+(require 'slime)
+(define-key slime-mode-map (kbd "C-c l")
+  'slime-hyperspec-lookup)
+
 ;;C-mode-stuff
 (defun c-hook ()
   (local-set-key (kbd "<f5>") 'compile)
@@ -92,8 +117,14 @@ return.")
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(cider-repl-display-help-banner nil)
+ '(cider-repl-use-pretty-printing t)
+ '(haskell-mode-hook
+   (quote
+    (haskell-decl-scan-mode haskell-indentation-mode highlight-uses-mode imenu-add-menubar-index interactive-haskell-mode)))
+ '(haskell-stylish-on-save t)
  '(racket-images-inline t)
- '(scheme-program-name "chibi-scheme"))
+ '(scheme-program-name "guile"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -102,5 +133,8 @@ return.")
  )
 
 ;;;Set up SBCL to work with SLIME
+
+(load (expand-file-name "~/quicklisp/slime-helper.el"))
 (setq inferior-lisp-program "/usr/local/bin/sbcl")
 
+(setq slime-contribs '(slime-fancy))
