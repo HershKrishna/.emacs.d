@@ -15,6 +15,7 @@
 		      cider
 		      slime
 		      markdown-mode))
+		     
 
 ;;Install missing packages
 (dolist (p my-packages)
@@ -117,14 +118,15 @@ return.")
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(cider-connected-hook (quote (paredit-mode)))
  '(cider-repl-display-help-banner nil)
  '(cider-repl-use-pretty-printing t)
- '(haskell-mode-hook
-   (quote
-    (haskell-decl-scan-mode haskell-indentation-mode highlight-uses-mode imenu-add-menubar-index interactive-haskell-mode)))
+ '(haskell-mode-hook (quote (intero-mode)))
  '(haskell-stylish-on-save t)
+ '(inferior-scheme-mode-hook (quote (paredit-mode)))
  '(racket-images-inline t)
- '(scheme-program-name "guile"))
+ '(racket-racket-program "racket")
+ '(scheme-program-name "chibi-scheme"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

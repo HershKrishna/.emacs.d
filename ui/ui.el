@@ -1,7 +1,7 @@
 (provide 'ui)
 
-(set-foreground-color "#23F")
-(set-background-color "#CDD")
+(set-foreground-color "#F63")
+(set-background-color "#000")
 (set-cursor-color "#23F")
 
 ;;Font settings
