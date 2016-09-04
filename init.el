@@ -14,7 +14,8 @@
 		      magit
 		      cider
 		      slime
-		      markdown-mode))
+		      markdown-mode
+		      rbenv))
 		     
 
 ;;Install missing packages
@@ -37,8 +38,6 @@
 (setq auto-save-file-name-transforms
       `((".*" ,user-temporary-file-directory t)))
 
-
-(desktop-save-mode 1);;Make sure session is preserved
 
 (setq recentf-save-file (concat user-emacs-directory ".recentf"))
 (require 'recentf)
@@ -124,9 +123,10 @@ return.")
  '(haskell-mode-hook (quote (intero-mode)))
  '(haskell-stylish-on-save t)
  '(inferior-scheme-mode-hook (quote (paredit-mode)))
+ '(org-support-shift-select nil)
  '(racket-images-inline t)
  '(racket-racket-program "racket")
- '(scheme-program-name "chibi-scheme"))
+ '(scheme-program-name "csi"))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -136,7 +136,9 @@ return.")
 
 ;;;Set up SBCL to work with SLIME
 
-(load (expand-file-name "~/quicklisp/slime-helper.el"))
+
 (setq inferior-lisp-program "/usr/local/bin/sbcl")
 
 (setq slime-contribs '(slime-fancy))
+
+(server-start)
