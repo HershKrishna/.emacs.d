@@ -5,7 +5,7 @@
 (set-cursor-color "#23F")
 
 ;;Font settings
-(set-face-attribute 'default nil :font "Liberation Mono-9")
+(set-face-attribute 'default nil :font "Liberation Mono-9" :height 90)
 
 (require 'linum)
 (global-linum-mode 1);;Set up Emacs so every line shows its number
