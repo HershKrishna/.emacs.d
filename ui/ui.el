@@ -7,8 +7,8 @@
 ;;Font settings
 (set-face-attribute 'default nil :font "Liberation Mono-9" :height 90)
 
-(require 'linum)
-(global-linum-mode 1);;Set up Emacs so every line shows its number
+;;Turn on relative line numbers
+(global-relative-line-numbers-mode)
 
 (blink-cursor-mode 0);;screw whoever though blinking cursors were a good idea
 
@@ -105,3 +105,12 @@
 
 (setq c-default-style "ragestyle")
 
+;;; Keybinding to make it easier to move around with more than two buffers
+
+(global-set-key (kbd "C-x <down>") 'windmove-down)
+
+(global-set-key (kbd "C-x <up>") 'windmove-up)
+
+(global-set-key (kbd "C-x <left>") 'windmove-left)
+
+(global-set-key (kbd "C-x <right>") 'windmove-right)

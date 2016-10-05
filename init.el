@@ -126,7 +126,10 @@ return.")
  '(org-support-shift-select nil)
  '(racket-images-inline t)
  '(racket-racket-program "racket")
- '(scheme-program-name "csi"))
+ '(scheme-program-name "csi")
+ '(slime-connected-hook
+   (quote
+    (slime-presentations-on-connected slime-repl-connected-hook-function))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -141,4 +144,4 @@ return.")
 
 (setq slime-contribs '(slime-fancy))
 
-(server-start)
+(desktop-save-mode 1)
