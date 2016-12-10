@@ -9,14 +9,12 @@
 (package-initialize) ;;make packages work from gnu marmalade and melpa
 
 ;;List of packages I use. Will grow over time of course
-(defvar my-packages '(racket-mode
-		      paredit
+(defvar my-packages '(paredit
 		      magit
 		      cider
 		      slime
 		      markdown-mode
 		      rbenv))
-		     
 
 ;;Install missing packages
 (dolist (p my-packages)
@@ -53,23 +51,15 @@
 ;;Set up paredit
 (autoload 'enable-paredit-mode "paredit"
   "Turn on pseudo-structural editing of Lisp code." t)
-;;Set up paredit mode
-(add-hook 'emacs-lisp-mode-hook
-	  #'enable-paredit-mode)
-(add-hook 'eval-expression-minibuffer-setup-hook
-	  #'enable-paredit-mode)
-(add-hook 'ielm-mode-hook
-	  #'enable-paredit-mode)
-(add-hook 'lisp-mode-hook
-	  #'enable-paredit-mode)
-(add-hook 'lisp-interaction-mode-hook
-	  #'enable-paredit-mode)
-(add-hook 'scheme-mode-hook
-	  #'enable-paredit-mode)
-(add-hook 'clojure-mode-hook
-	  #'enable-paredit-mode)
-(add-hook  'racket-mode-hook
-	   #'enable-paredit-mode)
+
+;;; Pianobar
+
+(autoload 'pianobar "pianobar" nil t)
+(add-hook 'pianobar-mode-hook
+	  (lambda ()
+	    (global-set-key (kbd "C-<f1>") 'pianobar-play-or-pause)
+	    (global-set-key (kbd "C-<f2>") 'pianobar-love-current-song)
+	    (global-set-key (kbd "C-<f3>") 'pianobar-ban-current-song)))
 
 ;;Function I needed once from EmacsWiki. Might as well keep it.
 (defun kill-other-buffers ()
@@ -85,10 +75,18 @@
 (define-key slime-mode-map (kbd "C-c l")
   'slime-hyperspec-lookup)
 
+;;; Special thanks to Andy Moreton on the gnu.emacs.help list for the following code
+;;; This code makes lookup go to a page in w3m-mode rather than in the system web XObrowser
+(defadvice common-lisp-hyperspec (around common-lisp-hyperspec/w3m activate)//
+	   "Use w3m to lookup symbols in the Common Lisp HyperSpec."
+	   (let ((browse-url-browser-function 'w3m-browse-url))
+	     ad-do-it))
+
 ;;C-mode-stuff
 (defun c-hook ()
   (local-set-key (kbd "<f5>") 'compile)
-  (local-set-key (kbd "<f6>") 'gdb))
+  (local-set-key (kbd "<f6>") 'gdb)
+  (smartparens-mode 1))
 
 (add-hook 'c-mode-hook
 	  'c-hook)
@@ -111,37 +109,72 @@ return.")
     (indent-according-to-mode)))
 
 (global-set-key (kbd "RET") 'electrify-return-if-match)
+;; Racket mode
+(defun racket-open-in-drracket ()
+  "Open the current file in Dr. Racket for debugging or testing purposes."
+  (interactive)
+  (start-process "drracket" nil "drracket" (buffer-file-name (current-buffer)) ))
+
+(add-hook 'racket-mode-hook
+	  (lambda ()
+	    (define-key racket-mode-map (kbd "<f6>")  'racket-open-in-drracket)))
+;; undo tree
+
+(global-set-key (kbd "C-M-\\") 'undo-tree-visualize)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#000000" "#8b0000" "#00ff00" "#ffa500" "#7b68ee" "#dc8cc3" "#93e0e3" "#dcdccc"])
  '(cider-connected-hook (quote (paredit-mode)))
  '(cider-repl-display-help-banner nil)
  '(cider-repl-use-pretty-printing t)
+ '(custom-enabled-themes nil)
+ '(custom-safe-themes
+   (quote
+    ("38e64ea9b3a5e512ae9547063ee491c20bd717fe59d9c12219a0b1050b439cdd" default)))
+ '(fci-rule-color "#383838")
  '(haskell-mode-hook (quote (intero-mode)))
  '(haskell-stylish-on-save t)
  '(inferior-scheme-mode-hook (quote (paredit-mode)))
+ '(inhibit-startup-screen t)
+ '(lisp-mode-hook
+   (quote
+    (#[nil "\300\301\302\303\211$\207"
+	   [add-hook font-lock-extend-region-functions slime-extend-region-for-font-lock t]
+	   5]
+     slime-lisp-mode-hook paredit-mode)))
  '(org-support-shift-select nil)
+ '(racket-error-context (quote high))
  '(racket-images-inline t)
  '(racket-racket-program "racket")
- '(scheme-program-name "csi")
+ '(scheme-program-name "guile")
  '(slime-connected-hook
    (quote
     (slime-presentations-on-connected slime-repl-connected-hook-function))))
+	  
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(hl-line ((t (:inherit highlight :background "gray6"))))
+ '(line-highlight ((((class color) (min-colors 88) (background transparent) :background "darkseagreen2") nil)))
+ '(secondary-selection ((t (:background "red4"))))
+ '(show-paren-match ((t (:background "dark red"))))
+ '(widget-field ((t (:background "white")))))
 
 ;;;Set up SBCL to work with SLIME
 
 
 (setq inferior-lisp-program "/usr/local/bin/sbcl")
 
-(setq slime-contribs '(slime-fancy))
+(load (expand-file-name "~/quicklisp/slime-helper.el"))
 
-(desktop-save-mode 1)
+
+;;; global undo tree is awesome. We're going to use it
+
+(global-undo-tree-mode)

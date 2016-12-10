@@ -1,16 +1,12 @@
 (provide 'ui)
 
-(set-foreground-color "#F63")
-(set-background-color "#000")
-(set-cursor-color "#23F")
 
+(global-hl-line-mode)
 ;;Font settings
 (set-face-attribute 'default nil :font "Liberation Mono-9" :height 90)
 
-;;Turn on relative line numbers
-(global-relative-line-numbers-mode)
-
-(blink-cursor-mode 0);;screw whoever though blinking cursors were a good idea
+;; linum
+(global-linum-mode)
 
 (tool-bar-mode -1)
 (toggle-scroll-bar -1)
@@ -27,7 +23,7 @@
 ;;My c style
 (c-add-style "ragestyle"
 	     '("gnu"
-	       (c-basic-offset . 2)	; Guessed value
+n	       (c-basic-offset . 2)	; Guessed value
 	       (c-offsets-alist
 		(block-close . 0)	; Guessed value
 		(brace-list-close . 0)	; Guessed value
@@ -114,3 +110,13 @@
 (global-set-key (kbd "C-x <left>") 'windmove-left)
 
 (global-set-key (kbd "C-x <right>") 'windmove-right)
+
+;;; transparency and other frame settings
+(setq default-frame-alist '((background-color . "#000")
+			    (foreground-color . "#3F6") 
+			    (alpha . (90 . 50))
+			    (cursor-color . "#C66")))
+
+;; set frame size
+(set-frame-height (selected-frame) 90)
+(set-frame-width (selected-frame) 200)
