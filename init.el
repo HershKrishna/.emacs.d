@@ -38,9 +38,12 @@
 
 
 (setq recentf-save-file (concat user-emacs-directory ".recentf"))
-(require 'recentf)
+nn(require 'recentf)
 (recentf-mode 1)
 (setq recentf-max-menu-items 40)
+
+;;; Here's a hint. DON'T JUST DO THE WRONG THING WHEN I FUCK UP
+(toggle-debug-on-error)
 
 (ido-mode t);;set autocomplete in my file buffers
 
@@ -136,9 +139,11 @@ return.")
  '(custom-safe-themes
    (quote
     ("38e64ea9b3a5e512ae9547063ee491c20bd717fe59d9c12219a0b1050b439cdd" default)))
+ '(emacs-lisp-mode-hook (quote (paredit-mode)))
  '(fci-rule-color "#383838")
  '(haskell-mode-hook (quote (intero-mode)))
  '(haskell-stylish-on-save t)
+ '(ielm-mode-hook (quote (paredit-mode)))
  '(inferior-scheme-mode-hook (quote (paredit-mode)))
  '(inhibit-startup-screen t)
  '(lisp-mode-hook
@@ -148,6 +153,9 @@ return.")
 	   5]
      slime-lisp-mode-hook paredit-mode)))
  '(org-support-shift-select nil)
+ '(package-selected-packages
+   (quote
+    (ssh weechat websocket w3m w32-browser w3 top-mode tablist spotify slime rust-mode ruby-dev request relative-line-numbers rbenv rainbow-delimiters racket-mode quack pianobar oauth2 multiple-cursors markdown-mode magit let-alist inf-ruby highlight-current-line helm-spotify haskell-mode hackernews enh-ruby-mode emojify emms cyberpunk-theme cm-mode circe cider alert)))
  '(racket-error-context (quote high))
  '(racket-images-inline t)
  '(racket-racket-program "racket")

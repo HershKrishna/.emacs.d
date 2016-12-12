@@ -23,7 +23,7 @@
 ;;My c style
 (c-add-style "ragestyle"
 	     '("gnu"
-n	       (c-basic-offset . 2)	; Guessed value
+	       (c-basic-offset . 2)	; Guessed value
 	       (c-offsets-alist
 		(block-close . 0)	; Guessed value
 		(brace-list-close . 0)	; Guessed value
@@ -114,7 +114,6 @@ n	       (c-basic-offset . 2)	; Guessed value
 ;;; transparency and other frame settings
 (setq default-frame-alist '((background-color . "#000")
 			    (foreground-color . "#3F6") 
-			    (alpha . (90 . 50))
 			    (cursor-color . "#C66")))
 
 ;; set frame size
