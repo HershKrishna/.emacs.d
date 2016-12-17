@@ -38,12 +38,10 @@
 
 
 (setq recentf-save-file (concat user-emacs-directory ".recentf"))
-nn(require 'recentf)
+(require 'recentf)
 (recentf-mode 1)
 (setq recentf-max-menu-items 40)
 
-;;; Here's a hint. DON'T JUST DO THE WRONG THING WHEN I FUCK UP
-(toggle-debug-on-error)
 
 (ido-mode t);;set autocomplete in my file buffers
 
@@ -79,8 +77,8 @@ nn(require 'recentf)
   'slime-hyperspec-lookup)
 
 ;;; Special thanks to Andy Moreton on the gnu.emacs.help list for the following code
-;;; This code makes lookup go to a page in w3m-mode rather than in the system web XObrowser
-(defadvice common-lisp-hyperspec (around common-lisp-hyperspec/w3m activate)//
+;;; This code makes lookup go to a page in w3m-mode rather than in the system web browser
+(defadvice common-lisp-hyperspec (around common-lisp-hyperspec/w3m activate)
 	   "Use w3m to lookup symbols in the Common Lisp HyperSpec."
 	   (let ((browse-url-browser-function 'w3m-browse-url))
 	     ad-do-it))
@@ -159,6 +157,7 @@ return.")
  '(racket-error-context (quote high))
  '(racket-images-inline t)
  '(racket-racket-program "racket")
+ '(scheme-mode-hook (quote (geiser-mode--maybe-activate paredit-mode)))
  '(scheme-program-name "guile")
  '(slime-connected-hook
    (quote
@@ -169,7 +168,7 @@ return.")
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(hl-line ((t (:inherit highlight :background "gray6"))))
+ '(hl-line ((t (:inherit highlight :background "gray10"))))
  '(line-highlight ((((class color) (min-colors 88) (background transparent) :background "darkseagreen2") nil)))
  '(secondary-selection ((t (:background "red4"))))
  '(show-paren-match ((t (:background "dark red"))))
