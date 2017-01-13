@@ -58,9 +58,9 @@
 (autoload 'pianobar "pianobar" nil t)
 (add-hook 'pianobar-mode-hook
 	  (lambda ()
-	    (global-set-key (kbd "C-<f1>") 'pianobar-play-or-pause)
-	    (global-set-key (kbd "C-<f2>") 'pianobar-love-current-song)
-	    (global-set-key (kbd "C-<f3>") 'pianobar-ban-current-song)))
+	    (global-set-key (kbd "<f7>") 'pianobar-play-or-pause)
+	    (global-set-key (kbd "<f8>") 'pianobar-love-current-song)
+	    (global-set-key (kbd "<f9>") 'pianobar-ban-current-song)))
 
 ;;Function I needed once from EmacsWiki. Might as well keep it.
 (defun kill-other-buffers ()
@@ -153,7 +153,7 @@ return.")
  '(org-support-shift-select nil)
  '(package-selected-packages
    (quote
-    (ssh weechat websocket w3m w32-browser w3 top-mode tablist spotify slime rust-mode ruby-dev request relative-line-numbers rbenv rainbow-delimiters racket-mode quack pianobar oauth2 multiple-cursors markdown-mode magit let-alist inf-ruby highlight-current-line helm-spotify haskell-mode hackernews enh-ruby-mode emojify emms cyberpunk-theme cm-mode circe cider alert)))
+    (android-mode forecast ssh weechat websocket w3m w32-browser w3 top-mode tablist spotify slime rust-mode ruby-dev request relative-line-numbers rbenv rainbow-delimiters racket-mode quack pianobar oauth2 multiple-cursors markdown-mode magit let-alist inf-ruby highlight-current-line helm-spotify haskell-mode hackernews enh-ruby-mode emojify emms cyberpunk-theme cm-mode circe cider alert)))
  '(racket-error-context (quote high))
  '(racket-images-inline t)
  '(racket-racket-program "racket")
