@@ -125,6 +125,8 @@ return.")
 
 ;;; Custom stuff *really* shouldn't live in init.el
 (setq custom-file "~/.emacs-cust.el")
+(if (not (file-exists-p custom-file))
+    (with-temp-buffer (write-file custom-file)))
 (load custom-file)
 
 ;;;Set up SBCL to work with SLIME
