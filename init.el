@@ -123,65 +123,20 @@ return.")
 
 (global-set-key (kbd "C-M-\\") 'undo-tree-visualize)
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector
-   ["#000000" "#8b0000" "#00ff00" "#ffa500" "#7b68ee" "#dc8cc3" "#93e0e3" "#dcdccc"])
- '(cider-connected-hook (quote (paredit-mode)))
- '(cider-repl-display-help-banner nil)
- '(cider-repl-use-pretty-printing t)
- '(custom-enabled-themes nil)
- '(custom-safe-themes
-   (quote
-    ("38e64ea9b3a5e512ae9547063ee491c20bd717fe59d9c12219a0b1050b439cdd" default)))
- '(emacs-lisp-mode-hook (quote (paredit-mode)))
- '(fci-rule-color "#383838")
- '(haskell-mode-hook (quote (intero-mode)))
- '(haskell-stylish-on-save t)
- '(ielm-mode-hook (quote (paredit-mode)))
- '(inferior-scheme-mode-hook (quote (paredit-mode)))
- '(inhibit-startup-screen t)
- '(lisp-mode-hook
-   (quote
-    (#[nil "\300\301\302\303\211$\207"
-	   [add-hook font-lock-extend-region-functions slime-extend-region-for-font-lock t]
-	   5]
-     slime-lisp-mode-hook paredit-mode)))
- '(org-support-shift-select nil)
- '(package-selected-packages
-   (quote
-    (android-mode forecast ssh weechat websocket w3m w32-browser w3 top-mode tablist spotify slime rust-mode ruby-dev request relative-line-numbers rbenv rainbow-delimiters racket-mode quack pianobar oauth2 multiple-cursors markdown-mode magit let-alist inf-ruby highlight-current-line helm-spotify haskell-mode hackernews enh-ruby-mode emojify emms cyberpunk-theme cm-mode circe cider alert)))
- '(racket-error-context (quote high))
- '(racket-images-inline t)
- '(racket-racket-program "racket")
- '(scheme-mode-hook (quote (geiser-mode--maybe-activate paredit-mode)))
- '(scheme-program-name "guile")
- '(slime-connected-hook
-   (quote
-    (slime-presentations-on-connected slime-repl-connected-hook-function))))
-	  
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(hl-line ((t (:inherit highlight :background "gray10"))))
- '(line-highlight ((((class color) (min-colors 88) (background transparent) :background "darkseagreen2") nil)))
- '(secondary-selection ((t (:background "red4"))))
- '(show-paren-match ((t (:background "dark red"))))
- '(widget-field ((t (:background "white")))))
+;;; Custom stuff *really* shouldn't live in init.el
+(setq custom-file "~/.emacs-cust.el")
+(load custom-file)
 
 ;;;Set up SBCL to work with SLIME
 
 
 (setq inferior-lisp-program "/usr/local/bin/sbcl")
 
-(load (expand-file-name "~/quicklisp/slime-helper.el"))
-
 
 ;;; global undo tree is awesome. We're going to use it
 
 (global-undo-tree-mode)
+
+;;; browser settings
+(setq browse-url-browser-function 'browse-url-generic
+      browse-url-generic-program "google-chrome")
