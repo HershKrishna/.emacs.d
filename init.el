@@ -196,6 +196,8 @@ return.")
          (font-lock-syntactic-face-function
          . lisp-font-lock-syntactic-face-function))))
 
+(window-numbering-mode 1)
+
 (defun remove-tabs ()
   "I don't much like tabs. Emacs won't insert them unless it *has* too but
 here's a way to remove them in files that have them"
