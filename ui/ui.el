@@ -3,7 +3,7 @@
 
 (global-hl-line-mode)
 ;;Font settings
-(set-face-attribute 'default nil :font "Liberation Mono-9" :height 90)
+(set-face-attribute 'default nil :font "Source Code Pro-9" :height 90)
 
 ;; linum
 (global-linum-mode)
@@ -36,7 +36,7 @@
 		(statement-block-intro . +) ; Guessed value
 		(substatement-open . 0)	    ; Guessed value
 		(topmost-intro . 0)	    ; Guessed value
-		(topmost-intro-cont . 0) ; Guessed value
+		(topmost-intro-cont . 0) ; Guessed value 
 		(access-label . -)
 		(annotation-top-cont . 0)
 		(annotation-var-cont . +)
@@ -112,10 +112,12 @@
 (global-set-key (kbd "C-x <right>") 'windmove-right)
 
 ;;; transparency and other frame settings
-(setq default-frame-alist '((background-color . "#000")
+(setq default-frame-alist '((background-color . "#222")
 			    (foreground-color . "#3F6") 
-			    (cursor-color . "#C66")))
+			    (cursor-color . "#C66")
+			    (fullscreen . maximized)))
 
 ;; set frame size
 (set-frame-height (selected-frame) 90)
 (set-frame-width (selected-frame) 200)
+

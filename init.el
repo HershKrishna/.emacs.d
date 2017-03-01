@@ -1,11 +1,14 @@
 ;;set up ui directory to load files
 (add-to-list 'load-path "~/.emacs.d/ui")
 
+(add-to-list 'load-path "~/.emacs.d/elisp")
+(require 'macros)
 ;;Package crap
 (require 'package)
 (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
                          ("marmalade" . "https://marmalade-repo.org/packages/")
-                         ("melpa" . "https://melpa.org/packages/")))
+                         ("melpa" . "https://melpa.org/packages/")
+			 ("melpa-stable" . "https://stable.melpa.org/packages/")))
 (package-initialize) ;;make packages work from gnu marmalade and melpa
 
 ;;List of packages I use. Will grow over time of course
@@ -15,6 +18,11 @@
 		      slime
 		      markdown-mode
 		      rbenv))
+
+(defun undef (input)
+  "remove a symbol from the symbol table"
+  (interactive)
+  (unintern input))
 
 ;;Install missing packages
 (dolist (p my-packages)
@@ -53,6 +61,19 @@
 (autoload 'enable-paredit-mode "paredit"
   "Turn on pseudo-structural editing of Lisp code." t)
 
+;;; Rust stuff
+(setq racer-rust-src-path 
+      (expand-file-name
+       "~/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src"))
+(add-hook 'rust-mode-hook #'racer-mode)
+(add-hook 'rust-mode-hook #'eldoc-mode)
+(add-hook 'racer-mode-hook #'company-mode)
+
+(require 'rust-mode)
+(define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
+(setq company-tooltip-align-annotations t)
+
+
 ;;; Pianobar
 
 (autoload 'pianobar "pianobar" nil t)
@@ -76,6 +97,9 @@
 (define-key slime-mode-map (kbd "C-c l")
   'slime-hyperspec-lookup)
 
+(add-hook 'slime-repl-mode-hook 'rainbow-delimiters-mode)
+(add-hook 'slime-repl-mode-hook 'paredit-mode)
+
 ;;; Special thanks to Andy Moreton on the gnu.emacs.help list for the following code
 ;;; This code makes lookup go to a page in w3m-mode rather than in the system web browser
 (defadvice common-lisp-hyperspec (around common-lisp-hyperspec/w3m activate)
@@ -89,6 +113,11 @@
   (local-set-key (kbd "<f6>") 'gdb)
   (smartparens-mode 1))
 
+(add-hook 'c-mode-common-hook
+               (lambda ()
+		 (font-lock-add-keywords
+		  nil
+		  '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))))
 (add-hook 'c-mode-hook
 	  'c-hook)
 (add-hook 'c++-mode-hook
@@ -139,6 +168,36 @@ return.")
 
 (global-undo-tree-mode)
 
-;;; browser settings
+;;; rainbow delimiters
+(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 (setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "google-chrome")
+
+(server-start)
+(ignore-errors (load (expand-file-name "~/quicklisp/slime-helper.el")))
+
+
+(add-hook 'slime-repl-mode-hook 'slime-repl-font-lock-setup)
+
+(defadvice slime-repl-insert-prompt (after font-lock-face activate)
+  (let ((inhibit-read-only t))
+    (add-text-properties
+     slime-repl-prompt-start-mark (point)
+     '(font-lock-face
+      slime-repl-prompt-face
+      rear-nonsticky
+      (slime-repl-prompt read-only font-lock-face intangible)))))
+(defvar slime-repl-font-lock-keywords lisp-font-lock-keywords-2)
+(defun slime-repl-font-lock-setup ()
+  (setq font-lock-defaults
+        '(slime-repl-font-lock-keywords
+         ;; From lisp-mode.el
+         nil nil (("+-*/.<>=!?$%_&~^:@" . "w")) nil
+         (font-lock-syntactic-face-function
+         . lisp-font-lock-syntactic-face-function))))
+
+(defun remove-tabs ()
+  "I don't much like tabs. Emacs won't insert them unless it *has* too but
+here's a way to remove them in files that have them"
+  (interactive)
+  (untabify (point-min) (point-max)))
