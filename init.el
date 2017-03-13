@@ -65,9 +65,10 @@
 (setq racer-rust-src-path 
       (expand-file-name
        "~/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src"))
-(add-hook 'rust-mode-hook #'racer-mode)
+
 (add-hook 'rust-mode-hook #'eldoc-mode)
 (add-hook 'racer-mode-hook #'company-mode)
+(add-hook 'rust-mode-hook #'racer-mode)
 
 (require 'rust-mode)
 (define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
@@ -122,6 +123,10 @@
 	  'c-hook)
 (add-hook 'c++-mode-hook
 	  'c-hook)
+
+;;; GUD key bindings
+(define-key gud-minor-mode-map (kbd "<F10>") 'gud-step)
+(define-key gud-minor-mode-map (kbd "<F11>") 'gud-cont)
 
 (defvar electrify-return-match
   "[\]}\)\"]"

@@ -112,10 +112,7 @@
 (global-set-key (kbd "C-x <right>") 'windmove-right)
 
 ;;; transparency and other frame settings
-(setq default-frame-alist '((background-color . "#222")
-			    (foreground-color . "#3F6") 
-			    (cursor-color . "#C66")
-			    (fullscreen . maximized)))
+(setq default-frame-alist '((fullscreen . maximized)))
 
 ;; set frame size
 (set-frame-height (selected-frame) 90)
