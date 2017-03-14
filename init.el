@@ -49,6 +49,11 @@
 (require 'recentf)
 (recentf-mode 1)
 (setq recentf-max-menu-items 40)
+;;; GDB stuff
+
+(defadvice gdb (after gdb-keybind)
+  (define-key gud-minor-mode-map (kbd "<f10>") 'gud-step)
+  (define-key gud-minor-mode-map (kbd "<f11>") 'gud-cont))
 
 
 (ido-mode t);;set autocomplete in my file buffers
@@ -124,10 +129,6 @@
 (add-hook 'c++-mode-hook
 	  'c-hook)
 
-;;; GUD key bindings
-(define-key gud-minor-mode-map (kbd "<F10>") 'gud-step)
-(define-key gud-minor-mode-map (kbd "<F11>") 'gud-cont)
-
 (defvar electrify-return-match
   "[\]}\)\"]"
   "If this regexp matches the text after the cursor, do an \"electric\"
@@ -149,6 +150,7 @@ return.")
   "Open the current file in Dr. Racket for debugging or testing purposes."
   (interactive)
   (start-process "drracket" nil "drracket" (buffer-file-name (current-buffer)) ))
+(add-hook 'racket-mode-hook 'paredit-mode)
 
 (add-hook 'racket-mode-hook
 	  (lambda ()
