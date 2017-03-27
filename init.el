@@ -34,21 +34,7 @@
 (defvar user-temporary-file-directory
   "~/.emacs-backup")
 
-(make-directory user-temporary-file-directory t)
-(setq backup-by-copying t)
-(setq backup-directory-alist 
-      `(("." . ,user-temporary-file-directory)
-	(,tramp-file-name-regexp nil)))
-(setq auto-save-list-file-prefix
-      (concat user-temporary-file-directory ".auto-saves-"))
-(setq auto-save-file-name-transforms
-      `((".*" ,user-temporary-file-directory t)))
 
-
-(setq recentf-save-file (concat user-emacs-directory ".recentf"))
-(require 'recentf)
-(recentf-mode 1)
-(setq recentf-max-menu-items 40)
 ;;; GDB stuff
 
 (defadvice gdb (after gdb-keybind)
@@ -105,7 +91,9 @@
 
 (add-hook 'slime-repl-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'slime-repl-mode-hook 'paredit-mode)
-
+(defadvice slime (after keydef)
+ (define-key slime-repl-mode-map (kbd "C-c l")
+   'slime-hyperspec-lookup))
 ;;; Special thanks to Andy Moreton on the gnu.emacs.help list for the following code
 ;;; This code makes lookup go to a page in w3m-mode rather than in the system web browser
 (defadvice common-lisp-hyperspec (around common-lisp-hyperspec/w3m activate)
@@ -155,6 +143,9 @@ return.")
 (add-hook 'racket-mode-hook
 	  (lambda ()
 	    (define-key racket-mode-map (kbd "<f6>")  'racket-open-in-drracket)))
+(add-hook 'racket-repl-mode-hook 'rainbow-delimiters-mode)
+(add-hook 'racket-repl-mode-hook 'paredit-mode)
+
 ;; undo tree
 
 (global-set-key (kbd "C-M-\\") 'undo-tree-visualize)
@@ -210,3 +201,4 @@ return.")
 here's a way to remove them in files that have them"
   (interactive)
   (untabify (point-min) (point-max)))
+
