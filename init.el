@@ -171,6 +171,8 @@ return.")
 (setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "google-chrome")
 
+(add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+
 (server-start)
 (ignore-errors (load (expand-file-name "~/quicklisp/slime-helper.el")))
 
