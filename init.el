@@ -172,6 +172,7 @@ return.")
       browse-url-generic-program "google-chrome")
 
 (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+(add-hook 'haskell-mode-hook 'smartparens-mode)
 
 (server-start)
 (ignore-errors (load (expand-file-name "~/quicklisp/slime-helper.el")))
@@ -204,3 +205,10 @@ here's a way to remove them in files that have them"
   (interactive)
   (untabify (point-min) (point-max)))
 
+(ignore-errors
+  (require 'fortune)
+
+  (setq fortune-dir "/usr/share/games/fortunes/")
+  
+  (setq fortune-file "/usr/share/games/fortunes/news"))
+(require 'lass)
