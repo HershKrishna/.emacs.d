@@ -96,12 +96,16 @@
 	   (let ((browse-url-browser-function 'w3m-browse-url))
 	     ad-do-it))
 
-;;C-mode-stuff
+;;; Imenu
+(require 'imenu)
 (defun my-imenu-rescan ()
   (interactive)
   (imenu--menubar-select imenu--rescan-item))
 (global-set-key (kbd "<f7>") #'my-imenu-rescan)
 
+(global-set-key (kbd "<f8>") 'sr-speedbar-toggle)
+
+;;C-mode-stuff
 (defun c-hook ()
   (local-set-key (kbd "<f5>") 'compile)
   (local-set-key (kbd "<f6>") 'gdb)
@@ -279,3 +283,6 @@ If FILE already exists, signal an error."
           (rename-buffer new-name)
           (set-visited-file-name new-name)
           (set-buffer-modified-p nil))))))
+(add-hook 'prog-mode-hook #'hs-minor-mode)
+(global-set-key (kbd "C-c <right>") 'hs-show-block)
+(global-set-key (kbd "C-c <left>") 'hs-hide-block)
