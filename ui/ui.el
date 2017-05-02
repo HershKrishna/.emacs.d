@@ -119,3 +119,6 @@
 (set-frame-width (selected-frame) 200)
 
 
+(hl-line-toggle-when-idle 1)
+(hl-line-when-idle-interval 10)
+(nyan-mode)

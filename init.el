@@ -69,11 +69,6 @@
 ;;; Pianobar
 
 (autoload 'pianobar "pianobar" nil t)
-(add-hook 'pianobar-mode-hook
-	  (lambda ()
-	    (global-set-key (kbd "<f7>") 'pianobar-play-or-pause)
-	    (global-set-key (kbd "<f8>") 'pianobar-love-current-song)
-	    (global-set-key (kbd "<f9>") 'pianobar-ban-current-song)))
 
 ;;Function I needed once from EmacsWiki. Might as well keep it.
 (defun kill-other-buffers ()
@@ -102,20 +97,38 @@
 	     ad-do-it))
 
 ;;C-mode-stuff
+(defun my-imenu-rescan ()
+  (interactive)
+  (imenu--menubar-select imenu--rescan-item))
+(global-set-key (kbd "<f7>") #'my-imenu-rescan)
+
 (defun c-hook ()
   (local-set-key (kbd "<f5>") 'compile)
   (local-set-key (kbd "<f6>") 'gdb)
-  (smartparens-mode 1))
+  (smartparens-mode 1)
+  (subword-mode))
 
 (add-hook 'c-mode-common-hook
                (lambda ()
 		 (font-lock-add-keywords
 		  nil
 		  '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))))
-(add-hook 'c-mode-hook
-	  'c-hook)
-(add-hook 'c++-mode-hook
-	  'c-hook)
+(add-hook 'c-mode-common-hook
+          'c-hook)
+(require 'ggtags)
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            (when (derived-mode-p 'c-mode 'c++-mode 'java-mode 'asm-mode)
+              (ggtags-mode 1))))
+
+(define-key ggtags-mode-map (kbd "C-c g s") 'ggtags-find-other-symbol)
+(define-key ggtags-mode-map (kbd "C-c g h") 'ggtags-view-tag-history)
+(define-key ggtags-mode-map (kbd "C-c g r") 'ggtags-find-reference)
+(define-key ggtags-mode-map (kbd "C-c g f") 'ggtags-find-file)
+(define-key ggtags-mode-map (kbd "C-c g c") 'ggtags-create-tags)
+(define-key ggtags-mode-map (kbd "C-c g u") 'ggtags-update-tags)
+
+(define-key ggtags-mode-map (kbd "M-,") 'pop-tag-mark)
 
 (defvar electrify-return-match
   "[\]}\)\"]"
@@ -168,11 +181,12 @@ return.")
 
 ;;; rainbow delimiters
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
-(setq browse-url-browser-function 'browse-url-generic
-      browse-url-generic-program "google-chrome")
 
 (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
 (add-hook 'haskell-mode-hook 'smartparens-mode)
+(add-hook 'haskell-mode-hook 'intero-mode)
+(require 'haskell)
+(define-key haskell-interactive-mode-map (kbd "M-.") 'haskell-mode-jump-to-def)
 
 (server-start)
 (ignore-errors (load (expand-file-name "~/quicklisp/slime-helper.el")))
@@ -212,3 +226,56 @@ here's a way to remove them in files that have them"
   
   (setq fortune-file "/usr/share/games/fortunes/news"))
 (require 'lass)
+(require 'auth-password-store)
+(auth-pass-enable)
+
+
+(require 'password-store)
+
+(add-hook 'after-init-hook 'global-company-mode)
+
+(eval-after-load 'dired
+  '(progn
+     (define-key dired-mode-map (kbd "C-c n") 'my-dired-create-file)
+     (defun my-dired-create-file (file)
+       "Create a file called FILE.
+If FILE already exists, signal an error."
+       (interactive
+        (list (read-file-name "Create file: " (dired-current-directory))))
+       (let* ((expanded (expand-file-name file))
+              (try expanded)
+              (dir (directory-file-name (file-name-directory expanded)))
+              new)
+         (if (file-exists-p expanded)
+             (error "Cannot create file %s: file exists" expanded))
+         ;; Find the topmost nonexistent parent dir (variable `new')
+         (while (and try (not (file-exists-p try)) (not (equal new try)))
+           (setq new try
+                 try (directory-file-name (file-name-directory try))))
+         (when (not (file-exists-p dir))
+           (make-directory dir t))
+         (write-region "" nil expanded t)
+         (when new
+           (dired-add-file new)
+           (dired-move-to-filename))))))
+
+;;;; Eshell setup
+;;; So for some reason Eshell doesn't like it if you have process-conection-type
+;;; set to t. Set it to nil instead
+(setf process-connection-type nil)
+
+;; source: http://steve.yegge.googlepages.com/my-dot-emacs-file
+(defun rename-file-and-buffer (new-name)
+  "Renames both current buffer and file it's visiting to NEW-NAME."
+  (interactive "sNew name: ")
+  (let ((name (buffer-name))
+        (filename (buffer-file-name)))
+    (if (not filename)
+        (message "Buffer '%s' is not visiting a file!" name)
+      (if (get-buffer new-name)
+          (message "A buffer named '%s' already exists!" new-name)
+        (progn
+          (rename-file filename new-name 1)
+          (rename-buffer new-name)
+          (set-visited-file-name new-name)
+          (set-buffer-modified-p nil))))))
