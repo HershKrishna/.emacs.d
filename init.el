@@ -1,5 +1,6 @@
 ;;set up ui directory to load files
 (add-to-list 'load-path "~/.emacs.d/ui")
+(add-to-list 'load-path "~/.installed-libs/dylan-mode")
 
 (add-to-list 'load-path "~/.emacs.d/elisp")
 (require 'macros)
@@ -19,6 +20,8 @@
 		      markdown-mode
 		      rbenv))
 
+
+
 (defun undef (input)
   "remove a symbol from the symbol table"
   (interactive)
@@ -33,16 +36,38 @@
 ;;Set backups out of my goddamn directories I am sick of this shit
 (defvar user-temporary-file-directory
   "~/.emacs-backup")
+;;; Dylan
+(require 'dime)
+(dime-setup '(dime-dylan dime-repl dime-compiler-notes-tree))
+(setq dime-dylan-implementations
+      '((opendylan ("/opt/opendylan-2014.1/bin/dswank")
+                   :env ("OPEN_DYLAN_USER_REGISTRIES=/opt/opendylan-YYYY.nn/sources/registry"))))
 
 
 ;;; GDB stuff
 
-(defadvice gdb (after gdb-keybind)
-  (define-key gud-minor-mode-map (kbd "<f10>") 'gud-step)
+(defadvice gdb  (after gdb-keybind)
+  (define-key gud-minor-mode-map (kbd "<f10>") 'gud-next)
   (define-key gud-minor-mode-map (kbd "<f11>") 'gud-cont))
+(defvar gud-overlay
+    (let* ((ov (make-overlay (point-min) (point-min))))
+      (overlay-put ov 'face 'secondary-selection)
+      ov)
+    "Overlay variable for GUD highlighting.")
+(defadvice gud-display-line (after my-gud-highlight act)
+  "Highlight current line."
+  (let* ((ov gud-overlay)
+         (bf (gud-find-file true-file)))
+    (with-current-buffer bf
+      (move-overlay ov (line-beginning-position) (line-beginning-position 2)
+                    ;;(move-overlay ov (line-beginning-position) (line-end-position)
+                    (current-buffer)))))
+(defun gud-kill-buffer ()
+  (interactive)
+  (delete-overlay gud-overlay))
+(add-hook 'kill-buffer-hook 'gud-kill-buffer)
 
-
-(ido-mode t);;set autocomplete in my file buffers
+(ido-mode t) ;;set autocomplete in my file buffers
 
 ;;Set up ui stuff so I can deal with it in seperate files
 (load-library "ui")
@@ -52,24 +77,13 @@
 (autoload 'enable-paredit-mode "paredit"
   "Turn on pseudo-structural editing of Lisp code." t)
 
-;;; Rust stuff
-(setq racer-rust-src-path 
-      (expand-file-name
-       "~/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/lib/rustlib/src/rust/src"))
-
-(add-hook 'rust-mode-hook #'eldoc-mode)
-(add-hook 'racer-mode-hook #'company-mode)
-(add-hook 'rust-mode-hook #'racer-mode)
-
-(require 'rust-mode)
-(define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
-(setq company-tooltip-align-annotations t)
-
-
 ;;; Pianobar
 
 (autoload 'pianobar "pianobar" nil t)
-
+(add-hook 'pianobar-mode-hook (lambda ()
+                                (global-set-key
+                                 (kbd "M-`")
+                                 'pianobar-play-or-pause)))
 ;;Function I needed once from EmacsWiki. Might as well keep it.
 (defun kill-other-buffers ()
   "kill all the other buffers"
@@ -89,8 +103,9 @@
 (defadvice slime (after keydef)
  (define-key slime-repl-mode-map (kbd "C-c l")
    'slime-hyperspec-lookup))
-;;; Special thanks to Andy Moreton on the gnu.emacs.help list for the following code
-;;; This code makes lookup go to a page in w3m-mode rather than in the system web browser
+;;; Special thanks to Andy Moreton on the gnu.emacs.help list for the
+;;; following code This code makes lookup go to a page in w3m-mode
+;;; rather than in the system web browser
 (defadvice common-lisp-hyperspec (around common-lisp-hyperspec/w3m activate)
 	   "Use w3m to lookup symbols in the Common Lisp HyperSpec."
 	   (let ((browse-url-browser-function 'w3m-browse-url))
@@ -114,9 +129,9 @@
 
 (add-hook 'c-mode-common-hook
                (lambda ()
-		 (font-lock-add-keywords
-		  nil
-		  '(("\\<\\(FIXME\\|TODO\\|BUG\\):" 1 font-lock-warning-face t)))))
+		 (font-lock-add-keywords nil
+		                         '(("\\<\\(FIXME\\|TODO\\|BUG\\|NOTE\\):" 1
+		                            font-lock-warning-face t)))))
 (add-hook 'c-mode-common-hook
           'c-hook)
 (require 'ggtags)
@@ -159,7 +174,11 @@ return.")
 
 (add-hook 'racket-mode-hook
 	  (lambda ()
-	    (define-key racket-mode-map (kbd "<f6>")  'racket-open-in-drracket)))
+	    (define-key racket-mode-map (kbd "<f6>")  'racket-open-in-drracket)
+            (font-lock-add-keywords
+		  nil
+		  '(("\\<\\(FIXME\\|TODO\\|BUG\\|NOTE\\):" 1
+                     font-lock-warning-face t)))))
 (add-hook 'racket-repl-mode-hook 'rainbow-delimiters-mode)
 (add-hook 'racket-repl-mode-hook 'paredit-mode)
 
@@ -186,11 +205,6 @@ return.")
 ;;; rainbow delimiters
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
-(add-hook 'haskell-mode-hook 'interactive-haskell-mode)
-(add-hook 'haskell-mode-hook 'smartparens-mode)
-(add-hook 'haskell-mode-hook 'intero-mode)
-(require 'haskell)
-(define-key haskell-interactive-mode-map (kbd "M-.") 'haskell-mode-jump-to-def)
 
 (server-start)
 (ignore-errors (load (expand-file-name "~/quicklisp/slime-helper.el")))
@@ -223,18 +237,6 @@ here's a way to remove them in files that have them"
   (interactive)
   (untabify (point-min) (point-max)))
 
-(ignore-errors
-  (require 'fortune)
-
-  (setq fortune-dir "/usr/share/games/fortunes/")
-  
-  (setq fortune-file "/usr/share/games/fortunes/news"))
-(require 'lass)
-(require 'auth-password-store)
-(auth-pass-enable)
-
-
-(require 'password-store)
 
 (add-hook 'after-init-hook 'global-company-mode)
 
@@ -263,11 +265,6 @@ If FILE already exists, signal an error."
            (dired-add-file new)
            (dired-move-to-filename))))))
 
-;;;; Eshell setup
-;;; So for some reason Eshell doesn't like it if you have process-conection-type
-;;; set to t. Set it to nil instead
-(setf process-connection-type nil)
-
 ;; source: http://steve.yegge.googlepages.com/my-dot-emacs-file
 (defun rename-file-and-buffer (new-name)
   "Renames both current buffer and file it's visiting to NEW-NAME."
@@ -286,3 +283,17 @@ If FILE already exists, signal an error."
 (add-hook 'prog-mode-hook #'hs-minor-mode)
 (global-set-key (kbd "C-c <right>") 'hs-show-block)
 (global-set-key (kbd "C-c <left>") 'hs-hide-block)
+
+
+(global-column-enforce-mode)
+(setq backup-directory-alist '(("." . "~/backup")))
+(add-hook 'geiser-mode-hook #'paredit-mode)
+
+
+(require 'cider)
+(setq cider-cljs-lein-repl
+      "(do (require 'figwheel-sidecar.repl-api)
+           (figwheel-sidecar.repl-api/start-figwheel!)
+           (figwheel-sidecar.repl-api/cljs-repl))")
+(add-hook 'clojure-mode-hook
+ 'paredit-mode)

@@ -1,9 +1,8 @@
 (provide 'ui)
 
 
-(global-hl-line-mode)
 ;;Font settings
-(set-face-attribute 'default nil :font "Source Code Pro-9" :height 90)
+(set-face-attribute 'default nil :font "Source Code Pro-9" :height 100)
 
 ;; linum
 (global-linum-mode)
@@ -119,6 +118,6 @@
 (set-frame-width (selected-frame) 200)
 
 
-(hl-line-toggle-when-idle 1)
-(hl-line-when-idle-interval 10)
-(nyan-mode)
+
+(appt-activate 1)
+(display-time)
