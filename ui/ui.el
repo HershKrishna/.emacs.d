@@ -121,3 +121,4 @@
 
 (appt-activate 1)
 (display-time)
+(split-window-horizontally)

@@ -18,8 +18,14 @@
 		      cider
 		      slime
 		      markdown-mode
-		      rbenv))
-
+		      rbenv
+		      multiple-cursors
+		      ggtags
+                      rainbow-delimiters
+                      undo-tree
+                      window-numbering
+                      company
+                      column-enforce-mode))
 
 
 (defun undef (input)
@@ -122,8 +128,8 @@
 
 ;;C-mode-stuff
 (defun c-hook ()
-  (local-set-key (kbd "<f5>") 'compile)
-  (local-set-key (kbd "<f6>") 'gdb)
+  (local-set-key (kbd "<f7>") 'compile)
+  (local-set-key (kbd "<f6>") 'realgud:gdb)
   (smartparens-mode 1)
   (subword-mode))
 
@@ -297,3 +303,10 @@ If FILE already exists, signal an error."
            (figwheel-sidecar.repl-api/cljs-repl))")
 (add-hook 'clojure-mode-hook
  'paredit-mode)
+(setq browse-url-browser-function 'browse-url-generic
+      browse-url-generic-program "google-chrome")
+
+
+
+(setq gdb-non-stop-settig nil)
+(autoload 'realgud:gdb "realgud.el")
