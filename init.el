@@ -313,3 +313,4 @@ If FILE already exists, signal an error."
 
 (setq ido-auto-merge-work-directories-length -1)
 (setq ido-create-new-buffer 'always)
+(global-set-key (kbd "M-p") 'pop-global-mark)

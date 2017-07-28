@@ -122,3 +122,4 @@
 (appt-activate 1)
 (display-time)
 (split-window-horizontally)
+(transient-mark-mode 0)
