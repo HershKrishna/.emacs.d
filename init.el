@@ -310,3 +310,6 @@ If FILE already exists, signal an error."
 
 (setq gdb-non-stop-settig nil)
 (autoload 'realgud:gdb "realgud.el")
+
+(setq ido-auto-merge-work-directories-length -1)
+(setq ido-create-new-buffer 'always)
