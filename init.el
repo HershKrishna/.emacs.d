@@ -25,7 +25,8 @@
                       undo-tree
                       window-numbering
                       company
-                      column-enforce-mode))
+                      column-enforce-mode
+                      flycheck))
 
 
 (defun undef (input)
@@ -124,11 +125,12 @@
   (imenu--menubar-select imenu--rescan-item))
 (global-set-key (kbd "<f7>") #'my-imenu-rescan)
 
-(global-set-key (kbd "<f8>") 'sr-speedbar-toggle)
+(require 'sr-speedbar)
+(global-set-key (kbd "<f8>") #'sr-speedbar-toggle)
 
 ;;C-mode-stuff
 (defun c-hook ()
-  (local-set-key (kbd "<f7>") 'compile)
+  (local-set-key (kbd "<f7>") 'recompile)
   (local-set-key (kbd "<f6>") 'realgud:gdb)
   (smartparens-mode 1)
   (subword-mode))
@@ -290,8 +292,7 @@ If FILE already exists, signal an error."
 (global-set-key (kbd "C-c <right>") 'hs-show-block)
 (global-set-key (kbd "C-c <left>") 'hs-hide-block)
 
-
-(global-column-enforce-mode)
+(column-number-mode)
 (setq backup-directory-alist '(("." . "~/backup")))
 (add-hook 'geiser-mode-hook #'paredit-mode)
 
@@ -314,3 +315,16 @@ If FILE already exists, signal an error."
 (setq ido-auto-merge-work-directories-length -1)
 (setq ido-create-new-buffer 'always)
 (global-set-key (kbd "M-p") 'pop-global-mark)
+
+(autoload 'toggle-source "toggle.el")
+
+(global-set-key (kbd "<f4>") 'toggle-source)
+
+(defun realgud-short-hook ()
+  (define-key realgud:gdb-short-key-mode-map
+    (kbd "x") 'realgud:cmd-clear))
+(add-hook 'realgud-short-key-mode-hook 'realgud-short-hook)
+
+(require 'flycheck)
+
+(global-flycheck-mode)
