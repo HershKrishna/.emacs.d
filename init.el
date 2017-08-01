@@ -43,12 +43,6 @@
 ;;Set backups out of my goddamn directories I am sick of this shit
 (defvar user-temporary-file-directory
   "~/.emacs-backup")
-;;; Dylan
-(require 'dime)
-(dime-setup '(dime-dylan dime-repl dime-compiler-notes-tree))
-(setq dime-dylan-implementations
-      '((opendylan ("/opt/opendylan-2014.1/bin/dswank")
-                   :env ("OPEN_DYLAN_USER_REGISTRIES=/opt/opendylan-YYYY.nn/sources/registry"))))
 
 
 ;;; GDB stuff
