@@ -66,12 +66,11 @@
    (cons ".hh" ".cc")
    (cons ".h" ".c")
    (cons ".hpp" ".cpp")
-   )
+   (cons ".ads" ".adb"))
   "The file extensions that we toggle between.
 If the current buffer contains a file that has an extension
 in this list then we attempt to open the file with the
-'other' extension.
-(This only works in the current directory).")
+'other' extension.")
 
 
 (defun toggle-source ()

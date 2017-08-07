@@ -3,7 +3,6 @@
 (add-to-list 'load-path "~/.installed-libs/dylan-mode")
 
 (add-to-list 'load-path "~/.emacs.d/elisp")
-(require 'macros)
 ;;Package crap
 (require 'package)
 (setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
@@ -26,13 +25,9 @@
                       window-numbering
                       company
                       column-enforce-mode
-                      flycheck))
+                      flycheck
+                      modalka))
 
-
-(defun undef (input)
-  "remove a symbol from the symbol table"
-  (interactive)
-  (unintern input))
 
 ;;Install missing packages
 (dolist (p my-packages)
@@ -43,7 +38,6 @@
 ;;Set backups out of my goddamn directories I am sick of this shit
 (defvar user-temporary-file-directory
   "~/.emacs-backup")
-
 
 ;;; GDB stuff
 
@@ -104,6 +98,7 @@
 (defadvice slime (after keydef)
  (define-key slime-repl-mode-map (kbd "C-c l")
    'slime-hyperspec-lookup))
+
 ;;; Special thanks to Andy Moreton on the gnu.emacs.help list for the
 ;;; following code This code makes lookup go to a page in w3m-mode
 ;;; rather than in the system web browser
@@ -118,7 +113,7 @@
   (interactive)
   (imenu--menubar-select imenu--rescan-item))
 (global-set-key (kbd "<f7>") #'my-imenu-rescan)
-
+(require 'helm)
 (require 'sr-speedbar)
 (global-set-key (kbd "<f8>") #'sr-speedbar-toggle)
 
@@ -128,12 +123,11 @@
   (local-set-key (kbd "<f6>") 'realgud:gdb)
   (smartparens-mode 1)
   (subword-mode))
-
-(add-hook 'c-mode-common-hook
-               (lambda ()
-		 (font-lock-add-keywords nil
-		                         '(("\\<\\(FIXME\\|TODO\\|BUG\\|NOTE\\):" 1
-		                            font-lock-warning-face t)))))
+(defun highlight-todos () (interactive)
+  (font-lock-add-keywords nil
+                          '(("\\<\\(FIXME\\|TODO\\|BUG\\|NOTE\\):" 1
+                             font-lock-warning-face t))))
+(add-hook 'prog-mode-hook 'highlight-todos)
 (add-hook 'c-mode-common-hook
           'c-hook)
 (require 'ggtags)
@@ -308,7 +302,11 @@ If FILE already exists, signal an error."
 
 (setq ido-auto-merge-work-directories-length -1)
 (setq ido-create-new-buffer 'always)
-(global-set-key (kbd "M-p") 'pop-global-mark)
+
+(global-set-key (kbd "M-p") 'backward-paragraph)
+(global-set-key (kbd "M-n") 'forward-paragraph)
+
+(global-set-key (kbd "M-i") 'pop-to-mark-command)
 
 (autoload 'toggle-source "toggle.el")
 
@@ -322,3 +320,14 @@ If FILE already exists, signal an error."
 (require 'flycheck)
 
 (global-flycheck-mode)
+(global-set-key (kbd "C-j") 'electrify-return-if-match)
+
+
+(global-set-key (kbd "C-M-n") 'next-error)
+(global-set-key (kbd "C-M-p") 'previous-error)
+;;; Ada-mode
+(defun ada-setup ()
+  (interactive)
+  (flycheck-mode -1)
+  (smartparens-mode 1))
+(add-hook 'ada-mode-hook 'ada-setup)

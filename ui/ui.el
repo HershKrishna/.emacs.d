@@ -1,6 +1,9 @@
-(provide 'ui)
+;;; Package --- summary
+;;; Commentary:
 
+;;; Basic UI customization for my application
 
+;;; Code:
 ;;Font settings
 (set-face-attribute 'default nil :font "Source Code Pro-9" :height 100)
 
@@ -35,7 +38,7 @@
                 (statement-block-intro . +) ; Guessed value
                 (substatement-open . 0)     ; Guessed value
                 (topmost-intro . 0)         ; Guessed value
-                (topmost-intro-cont . 0) ; Guessed value 
+                (topmost-intro-cont . 0) ; Guessed value
                 (access-label . -)
                 (annotation-top-cont . 0)
                 (annotation-var-cont . +)
@@ -110,6 +113,8 @@
 
 (global-set-key (kbd "C-x <right>") 'windmove-right)
 
+(global-set-key (kbd "C-z") 'undo-tree-redo)
+
 ;;; transparency and other frame settings
 (setq default-frame-alist '((fullscreen . maximized)))
 
@@ -117,9 +122,92 @@
 (set-frame-height (selected-frame) 90)
 (set-frame-width (selected-frame) 200)
 
+(require 'modalka)
 
+(add-hook 'text-mode-hook 'modalka-mode)
+(add-hook 'prog-mode-hook 'modalka-mode)
+
+(modalka-define-kbd "p" "C-p")
+
+(modalka-define-kbd "a" "C-a")
+(modalka-define-kbd "e" "C-e")
+
+(modalka-define-kbd "n" "C-n")
+
+(modalka-define-kbd "f" "C-f")
+
+(modalka-define-kbd "b" "C-b")
+
+(modalka-define-kbd "s" "C-s")
+(modalka-define-kbd "r" "C-r")
+
+(modalka-define-kbd "R" "M-%")
+
+(modalka-define-kbd "h" "M-h")
+
+(modalka-define-kbd "g" "C-g")
+
+(modalka-define-kbd "." "M-.")
+(modalka-define-kbd "," "M-,")
+
+(modalka-define-kbd "/" "C-/")
+
+(modalka-define-kbd "w" "C-w")
+(modalka-define-kbd "W" "M-w")
+
+(modalka-define-kbd "y" "C-y")
+(modalka-define-kbd "Y" "M-y")
+
+(modalka-define-kbd "k" "C-k")
+
+(modalka-define-kbd "o" "C-x o")
+
+(modalka-define-kbd "d" "C-d")
+
+(modalka-define-kbd "j" "C-j")
+
+(modalka-define-kbd "B" "C-x b")
+
+(modalka-define-kbd "q" "M-q")
+
+(modalka-define-kbd "z" "C-z")
+
+(modalka-define-kbd "l" "C-l")
+
+(modalka-define-kbd "i" "M-i")
+
+(modalka-define-kbd "u" "C-u")
+
+(modalka-define-kbd "t" "C-t")
+
+(modalka-define-kbd "x" "M-x")
+
+(modalka-define-kbd "c" "M-c")
+
+(modalka-define-kbd ";" "M-;")
+
+(modalka-define-kbd "[" "C-x (")
+(modalka-define-kbd "]" "C-x )")
+
+(modalka-define-kbd "S" "C-x C-s")
+(modalka-define-kbd "F" "C-x C-F")
+
+(modalka-define-kbd "v" "C-v")
+
+(modalka-define-kbd "m" "M-m")
+
+(modalka-define-kbd "<SPC>" "C-<SPC>")
+
+(global-set-key (kbd "C-i") #'modalka-mode)
+(global-set-key (kbd "M-m") #'modalka-mode)
+
+
+(setq-default cursor-type '(bar . 1))
+(setq modalka-cursor-type 'box)
 
 (appt-activate 1)
 (display-time)
 (split-window-horizontally)
 (transient-mark-mode 0)
+(provide 'ui)
+;;; ui.el ends here
