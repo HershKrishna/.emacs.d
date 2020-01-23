@@ -55,6 +55,7 @@
 (modalka-define-kbd "H" "C-c @ C-c")
 
 (modalka-define-kbd "g" "C-g")
+(define-key modalka-mode-map (kbd "G") #' goto-line)
 
 (modalka-define-kbd "." "M-.")
 (modalka-define-kbd "," "M-,")
@@ -100,11 +101,15 @@
       [?\C-\; ?\M-m])
 (define-key modalka-mode-map ";" 'modalka-comment)
 
-(modalka-define-kbd "S" "C-x C-s")
+(defun save-all-buffers ()
+  (interactive) (save-some-buffers t))
+
+(define-key modalka-mode-map (kbd "S") 'save-all-buffers)
 (modalka-define-kbd "F" "C-x C-f")
 
 (modalka-define-kbd "v" "C-v")
 (modalka-define-kbd "V" "M-v")
+(modalka-define-kbd "T" "C-T")
 
 (modalka-define-kbd "m" "M-m")
 
@@ -113,7 +118,8 @@
 (defun capitalize-letter ()
   (interactive)
   (capitalize-region (point-marker) (+ 1 (point-marker))))
-(define-key modalka-mode-map (kbd "C") 'recompile)
+(modalka-define-kbd "C" "<f5>")
+(modalka-define-kbd "E" "<f6>")
 
 (modalka-define-kbd ">" "M->")
 (modalka-define-kbd "<" "M-<")
@@ -133,7 +139,7 @@
 (global-set-key (kbd "M-[") #'kmacro-start-macro)
 (global-set-key (kbd "M-]") #'kmacro-end-macro)
 (define-key modalka-mode-map (kbd "J") (lookup-key global-map (kbd "C-x")))
-(define-key modalka-mode-map (kbd "I") #'indent-buffer)
+(define-key modalka-mode-map (kbd "I") #'whitespace-mode)
 
 (setq-default cursor-type '(bar . 1))
 (setq modalka-cursor-type 'box)
