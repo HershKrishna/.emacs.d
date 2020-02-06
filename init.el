@@ -234,3 +234,12 @@
 (display-time-mode 1)
 
 (use-package glsl-mode :ensure t)
+
+(use-package markdown-mode
+  :ensure t
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :bind :bind (:map markdown-mode-map ("M-n" . markdown-forward-paragraph) ("M-p" . markdown-backward-paragraph)))
+
+(use-package rainbow-delimiters :ensure t :hook (prog-mode . rainbow-delimiters-mode))
