@@ -27,7 +27,7 @@
 
 (require 'odin-mode)
 
-(use-package undo-tree :ensure t :bind ("C-z" . undo-tree-redo) ("C-/" . undo-tree-undo) ("C-x u" . undo-tree-visualize))
+(use-package undo-tree :ensure t :bind ("C-z" . undo-tree-redo) ("C-/" . undo-tree-undo) ("C-x u" . undo-tree-visualize) :init (global-undo-tree-mode))
 
 (use-package window-numbering :ensure t :init (window-numbering-mode 1))
 
@@ -243,3 +243,4 @@
   :bind :bind (:map markdown-mode-map ("M-n" . markdown-forward-paragraph) ("M-p" . markdown-backward-paragraph)))
 
 (use-package rainbow-delimiters :ensure t :hook (prog-mode . rainbow-delimiters-mode))
+(server-start)

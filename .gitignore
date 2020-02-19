@@ -4,3 +4,4 @@ elpa/
 transient
 server/
 /custom.el
+/smex-items

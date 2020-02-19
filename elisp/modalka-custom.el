@@ -58,6 +58,7 @@
 (define-key modalka-mode-map (kbd "G") #' goto-line)
 
 (modalka-define-kbd "." "M-.")
+(modalka-define-kbd "{"  "C-x 5 o")
 (modalka-define-kbd "," "M-,")
 
 (modalka-define-kbd "/" "C-/")
