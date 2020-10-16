@@ -5,3 +5,4 @@ transient
 server/
 /custom.el
 /smex-items
+/.lsp-session-v1

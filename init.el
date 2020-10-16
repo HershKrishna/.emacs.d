@@ -31,7 +31,7 @@
 
 (use-package window-numbering :ensure t :init (window-numbering-mode 1))
 
-(use-package company :ensure t :init (global-company-mode))
+(use-package company :ensure t :init (global-company-mode) :bind ("M-i" . company-complete))
 
 (use-package magit :ensure t :bind ("C-x g" . magit))
 
@@ -64,7 +64,8 @@
 
 (add-hook 'before-save-hook 'delete-all-trailing-whitespace)
 
-(use-package clang-format :ensure t :hook (c-mode . install-c-save-hook) (c++-mode . install-c-save-hook))
+(use-package glsl-mode :ensure t)
+(use-package clang-format :ensure t :hook (c-mode . install-c-save-hook) (c++-mode . install-c-save-hook) (glsl-mode . install-c-save-hook))
 
 (use-package smartparens :ensure t :init (smartparens-global-mode) (sp-pair "'" nil :actions :rem))
 
@@ -73,7 +74,7 @@
 ;;My c style
 (c-add-style "ragestyle"
              '("gnu"
-               (c-basic-offset . 4)     ; Guessed value
+               (c-basic-offset . 2)     ; Guessed value
                (c-offsets-alist
                 (class-open . 0)         ; Guessed value
                 (defun-block-intro . +)          ; Guessed value
@@ -158,7 +159,7 @@
 (defun highlight-todos () (interactive)
        (font-lock-add-keywords
         nil
-        '(("\\<\\(FIXME\\|TODO\\|BUG\\|NOTE\\|HACK\\|FIXME(.*)\\|TODO(.*)\\|BUG()\\|NOTE(.*)\\|HACK(.*)\\):"
+        '(("\\<\\(FIXME\\|TODO\\|BUG\\|NOTE\\|HACK\\|STUDY\\|FIXME(.*)\\|TODO(.*)\\|BUG()\\|NOTE(.*)\\|HACK(.*)\\|STUDY\\):"
            1 font-lock-warning-face t))))
 
 (add-hook 'prog-mode-hook 'highlight-todos)
@@ -181,7 +182,6 @@
 
 (setq backup-directory-alist '(("." . "~/MyEmacsBackups")))
 
-(add-to-list 'auto-mode-alist '("\\.inl\\'" . c-mode))
 
 (use-package org :ensure t :bind (:map org-mode-map ("C-T" . org-todo)))
 
@@ -233,14 +233,26 @@
 
 (display-time-mode 1)
 
-(use-package glsl-mode :ensure t)
+
 
 (use-package markdown-mode
   :ensure t
   :mode (("README\\.md\\'" . gfm-mode)
          ("\\.md\\'" . markdown-mode)
          ("\\.markdown\\'" . markdown-mode))
-  :bind :bind (:map markdown-mode-map ("M-n" . markdown-forward-paragraph) ("M-p" . markdown-backward-paragraph)))
+   :bind (:map markdown-mode-map ("M-n" . markdown-forward-paragraph) ("M-p" . markdown-backward-paragraph)))
 
 (use-package rainbow-delimiters :ensure t :hook (prog-mode . rainbow-delimiters-mode))
+
+(use-package hideshow
+  :ensure t
+  :bind ("C-c @ C-c" . hs-toggle-hiding)
+  :hook (prog-mode . hs-minor-mode))
 (server-start)
+(setq default-buffer-file-coding-system 'utf-8-unix)
+(column-number-mode 1)
+(setq-default indent-tabs-mode nil)
+
+(setq-default truncate-lines t)
+
+
