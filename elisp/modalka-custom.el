@@ -1,4 +1,4 @@
-
+;; -*- lexical-binding: t -*-
 (modalka-global-mode)
 
 (add-to-list 'modalka-excluded-modes 'magit-status-mode)
@@ -148,6 +148,8 @@
 (fset 'modalka-comment
       [?\M-\; ?\M-m])
 (define-key modalka-mode-map ";" 'modalka-comment)
+
+(global-set-key (kbd "C-h h") nil)
 
 (provide 'modalka-custom)
 

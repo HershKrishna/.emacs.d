@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t -*-
+
 (setq ring-bell-function 'ignore)
 
 (split-window-horizontally)
@@ -255,4 +257,17 @@
 
 (setq-default truncate-lines t)
 
+(use-package lsp-mode :ensure t)
 
+(require 'lsp)
+(add-to-list 'lsp-language-id-configuration '(zig-mode . "zig"))
+(lsp-register-client
+  (make-lsp-client
+    :new-connection (lsp-stdio-connection "zls")
+    :major-modes '(zig-mode)
+    :server-id 'zls))
+
+(use-package unicode-fonts
+   :ensure t
+   :config
+    (unicode-fonts-setup))

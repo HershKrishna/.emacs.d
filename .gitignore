@@ -6,3 +6,4 @@ server/
 /custom.el
 /smex-items
 /.lsp-session-v1
+/var/
