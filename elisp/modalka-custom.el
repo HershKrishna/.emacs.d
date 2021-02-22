@@ -77,6 +77,7 @@
 (modalka-define-kbd "K" "C-x k")
 
 (modalka-define-kbd "d" "C-d")
+(modalka-define-kbd "D" "C-x d")
 
 (modalka-define-kbd "j" "C-j")
 
@@ -87,6 +88,7 @@
 (modalka-define-kbd "z" "C-z")
 
 (modalka-define-kbd "l" "C-l")
+(define-key modalka-mode-map "L" 'magit-blame)
 
 (modalka-define-kbd "i" "ESC M-i")
 (modalka-define-kbd "c" "ESC M-r")

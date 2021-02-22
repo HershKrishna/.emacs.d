@@ -35,7 +35,7 @@
 
 (use-package company :ensure t :init (global-company-mode) :bind ("M-i" . company-complete))
 
-(use-package magit :ensure t :bind ("C-x g" . magit))
+(use-package magit :ensure t :bind ("C-x g" . magit) ("C-x f" . magit-blame))
 
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
@@ -67,7 +67,7 @@
 (add-hook 'before-save-hook 'delete-all-trailing-whitespace)
 
 (use-package glsl-mode :ensure t)
-(use-package clang-format :ensure t :hook (c-mode . install-c-save-hook) (c++-mode . install-c-save-hook) (glsl-mode . install-c-save-hook))
+(use-package clang-format :ensure t :hook (c-mode . install-c-save-hook) (c++-mode . install-c-save-hook) (glsl-mode . install-c-save-hook) (ispc-mode . install-c-save-hook))
 
 (use-package smartparens :ensure t :init (smartparens-global-mode) (sp-pair "'" nil :actions :rem))
 
@@ -192,7 +192,7 @@
 
 (defun zig-fmt-buffer ()
   (interactive)
-  (let ((temp-buffer (generate-new-buffer-name "*zig-fmt*" "*zig-fmt*"))
+  (let ((temp-buffer (generate-new-buffer-name "*zig-fmt*"))
 	(temp-file (make-temp-file "zig-fmt" nil ".err")))
     (let ((status (call-process-region nil nil "zig" nil (list temp-buffer temp-file) nil "fmt" "--stdin"))
 	  (stderr
@@ -202,11 +202,15 @@
              (buffer-substring-no-properties (point-min) (point-max)))))
       (cond
        ((stringp status)
+        (delete-file temp-file)
+        (kill-buffer temp-buffer)
         (error "(mycustom-fmt killed by signal %s%s)" status stderr))
        ((not (zerop status))
+        (delete-file temp-file)
+            (kill-buffer temp-buffer)
         (error "(mycustom-fmt failed with code %d%s)" status stderr))
        (t
-	(replace-buffer-contents temp-buffer))))
+        (replace-buffer-contents temp-buffer))))
     (delete-file temp-file)
     (kill-buffer temp-buffer)))
 
@@ -266,6 +270,103 @@
     :server-id 'zls))
 
 (use-package unicode-fonts
-   :ensure t
-   :config
-    (unicode-fonts-setup))
+  :ensure t
+  :config
+  (unicode-fonts-setup))
+
+
+(require 'cc-mode)
+
+;; These are only required at compile time to get the sources for the
+;; language constants.  (The cc-fonts require and the font-lock
+;; related constants could additionally be put inside an
+;; (eval-after-load "font-lock" ...) but then some trickery is
+;; necessary to get them compiled.)
+(eval-when-compile
+  (require 'cc-langs)
+  (require 'cc-fonts))
+
+
+(eval-and-compile
+  ;; Make our mode known to the language constant system.  Use C
+  ;; mode as the fallback for the constants we don't change here.
+  ;; This needs to be done also at compile time since the language
+  ;; constants are evaluated then.
+  (c-add-language 'ispc-mode 'c++-mode))
+
+(defconst ispc-font-lock-keywords-1
+  (c-lang-const c-matchers-1 ispc)
+  "Minimal highlighting for ISPC mode.")
+
+(defconst ispc-font-lock-keywords-2
+  (c-lang-const c-matchers-2 ispc)
+  "Fast normal highlighting for ISPC mode.")
+
+(defconst ispc-font-lock-keywords-3
+  (c-lang-const c-matchers-3 ispc)
+  "Accurate normal highlighting for ISPC mode.")
+
+(defvar ispc-mode-syntax-table nil
+  "Syntax table used in cuda-mode buffers.")
+(or ispc-mode-syntax-table
+    (setq ispc-mode-syntax-table
+          (funcall (c-lang-const c-make-mode-syntax-table ispc))))
+
+(defvar ispc-mode-abbrev-table nil
+  "Abbreviation table used in ispc-mode buffers.")
+
+(c-define-abbrev-table 'ispc-mode-abbrev-table
+  ;; Keywords that if they occur first on a line might alter the
+  ;; syntactic context, and which therefore should trig reindentation
+  ;; when they are completed.
+  '(("else" "else" c-electric-continued-statement 0)
+    ("while" "while" c-electric-continued-statement 0)))
+
+(defvar ispc-mode-map (let ((map (c-make-inherited-keymap)))
+              ;; Add bindings which are only useful for ISPC
+              map)
+  "Keymap used in ispc-mode buffers.")
+
+(easy-menu-define ispc-menu ispc-mode-map "ISPC Mode Commands"
+          ;; Can use `ispc' as the language for `c-mode-menu'
+          ;; since its definition covers any language.  In
+          ;; this case the language is used to adapt to the
+          ;; nonexistence of a cpp pass and thus removing some
+          ;; irrelevant menu alternatives.
+          (cons "ISPC" (c-lang-const c-mode-menu ispc)))
+
+(defun ispc-mode ()
+  "Major mode for editing ISPC. ISPC is a C like language
+extension for vector coding created by Intel
+
+The hook `c-mode-common-hook' is run with no args at mode
+initialization, then `ispc-mode-hook'.
+
+Key bindings:
+\\{ispc-mode-map}"
+  (interactive)
+  (kill-all-local-variables)
+  (c-initialize-cc-mode t)
+  (set-syntax-table ispc-mode-syntax-table)
+  (setq major-mode 'ispc-mode
+        mode-name "ispc"
+        local-abbrev-table ispc-mode-abbrev-table
+        abbrev-mode t)
+  (use-local-map c-mode-map)
+  ;; `c-init-language-vars' is a macro that is expanded at compile
+  ;; time to a large `setq' with all the language variables and their
+  ;; customized values for our language.
+  (c-init-language-vars ispc-mode)
+  ;; `c-common-init' initializes most of the components of a CC Mode
+  ;; buffer, including setup of the mode menu, font-lock, etc.
+  ;; There's also a lower level routine `c-basic-common-init' that
+  ;; only makes the necessary initialization to get the syntactic
+  ;; analysis and similar things working.
+  (c-common-init 'ispc-mode)
+  (easy-menu-add ispc-menu)
+  (run-hooks 'c-mode-common-hook)
+  (run-hooks 'ispc-mode-hook)
+  (setq font-lock-keywords-case-fold-search t)
+  (c-update-modeline))
+
+
