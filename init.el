@@ -19,6 +19,7 @@
 (use-package paredit
   :ensure t
   :hook (emacs-lisp-mode . paredit-mode)
+  :hook (ielm-mode . paredit-mode)
   :bind (:map paredit-mode-map (";" . nil)))
 
 (global-set-key (kbd "<f5>") #'recompile)
@@ -246,8 +247,6 @@
          ("\\.markdown\\'" . markdown-mode))
    :bind (:map markdown-mode-map ("M-n" . markdown-forward-paragraph) ("M-p" . markdown-backward-paragraph)))
 
-(use-package rainbow-delimiters :ensure t :hook (prog-mode . rainbow-delimiters-mode))
-
 (use-package hideshow
   :ensure t
   :bind ("C-c @ C-c" . hs-toggle-hiding)
@@ -368,5 +367,12 @@ Key bindings:
   (run-hooks 'ispc-mode-hook)
   (setq font-lock-keywords-case-fold-search t)
   (c-update-modeline))
+
+
+(use-package rust-mode :ensure t :hook (rust-mode . rust-setup-format))
+
+(use-package eglot :ensure t :hook (rust-mode . eglot-ensure) )
+
+(defun rust-setup-format () (add-hook 'before-save-hook 'rust-format-buffer nil t))
 
 

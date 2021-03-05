@@ -7,3 +7,8 @@ server/
 /smex-items
 /.lsp-session-v1
 /var/
+t
+/.rust-auto-use-cache
+/FsAutoComplete/
+/merlin/
+/url/
